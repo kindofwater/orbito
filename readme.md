@@ -22,3 +22,29 @@ Push access from others is currently restricted, and I’ve written all this in 
 
 That’s all—I was too lazy to type, so I just talked to ChatGPT instead.
 Thanks, and have a great day!
+
+저번에 했던 readme 파일에서 추가하고 싶은 부분들이 있어서 더 하고 싶습니다. 왜냐하면 이게 저번에 했던 걸 봤더니 세부적인 부분에 있어서는 똑바로 적지 않은 것 같아서 세부적인 부분까지도 조금 잘 적어야 할 것 같다는 생각이 들었어요
+
+I want to add more to the README file I worked on last time because, after looking at it again, I realized that some of the details weren’t written properly. I feel like I should describe those specific parts more clearly this time.
+
+
+
+추가하고 싶은 내용이 조금 다른 것도 있는데 먼저 좀 구체적인 계획을 그나마 말한다면 아무래도 GCS? GCM? 아무튼 구글 클라우드가 9월에 말려고 되니까 그때까지는 이거를 어느정도 한 번은 업로드를 해봐야 한다고 생각하는데 먼저 첫 번째로 플라스크 어떻게 순서를 잡는 게 좋을지 잘 모르겠는데 저는 먼저 Node.JS 개발을 완료한 다음에 써봐야 한다고 생각하거든요 
+
+그래서 개발을 완료한 게 이번 7월 내 목표가 될 것 같고 7월 내도록은 제 로컬에서 실행시켰던 플라스크를 써서 react.JS라는 플라스크를 써서 게임이 똑바로 돌아가는 게 목표고요 제 로컬 호스트 내에서 두 번째는 그렇게 만든 JS를 빌드해서 구글 클라우드에 올리는 게 목표입니다 
+
+첫 번째로 이걸 할 때는 먼저 Node.JS에 관한 공부를 해야 할 것 같고요 왜냐면 react.JS를 제가 어떻게 돌아가는지 전혀 모르고 있는 상태이기 때문에 이게 어떻게 돌아가는지 확인할 필요가 있고 또 두 번째로 어쨌든 플라스크로 받아와서 이걸 실행시키는 과정이 있다 보니까 플라스크가 어떻게 돌아가는지도 한번 확인을 해봐야 할 것 같아요 근데 이거는 일단 한번 해볼게 해보고 생각을 해보고 그 다음에 7월에 이렇게 하고 넘어가서 8월이 되면 8월 내도록은 아마 이걸 이제 빌드를 어떻게 하는지 그 때 react.JS에 좀 더 초점을 맞춰주셨겠죠? 
+
+빌드를 어떻게 하는지 구글 클라우드에 올릴 수 있는지 또 올렸을 때 어디다가 백업을 하는지를 신경을 쓰면 될 것 같아요 그래서 제가 드리고 싶은 말씀은 7월 내도록은 Node.JS 문법 그리고 플라스크 문법 플라스크 문법이라고 할 것도 없긴 한데 플라스크 문법 만드는 데 집중하고 그 다음에는 react.JS 할 것 같습니다
+
+There are some additional things I’d like to include, and they’re a bit different from what I mentioned before. To talk more concretely about the plan: since GCS? GCM?—anyway, Google Cloud—is supposed to expire around September, I think I need to at least try uploading the project before then.
+
+First, I’m not entirely sure how to structure the process with Flask, but I think I should complete development with Node.js first before diving into it. So finishing the Node.js part will probably be my main goal for July. Throughout July, my goal is to get the game running properly locally by using Flask with something like React.js.
+
+Secondly, after that, my goal is to build the JS version I made and upload it to Google Cloud. But before doing that, I’ll need to study Node.js, because I really have no idea how React.js works at this point. I need to understand how it operates. Also, since I’m planning to use Flask to handle requests and run the backend, I should take some time to understand how Flask works too.
+
+That being said, I’ll give it a try first and then think things through. So in July, the plan is to focus on learning the basics of Node.js and Flask—though there's not much to call "Flask syntax"—and then move on to React.js.
+
+Once August comes, I think I’ll shift my focus more to building and deploying. I’ll need to figure out how to build the app, how to upload it to Google Cloud, and where to back things up once it’s deployed.
+
+So to summarize, throughout July I’ll focus on Node.js and Flask, and after that, I’ll move on to React.js.
