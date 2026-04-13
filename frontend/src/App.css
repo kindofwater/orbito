@@ -1,0 +1,79 @@
+body{
+  background-color: #7AAACE;
+}
+
+
+.div_all {
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 상단 박스 */
+.header-box {
+  margin-top: 20px;
+
+  width: 320px;
+  min-height: 120px;
+
+  padding: 15px;
+  border-radius: 20px;
+  background: #F7F8F0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* 그리드 박스 */
+.grid-box {
+  margin-top: 30px;
+
+  width: 480px;
+  padding: 20px;
+
+  border-radius: 20px;
+  background: #F7F8F0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+
+  justify-items: center;
+  align-items: center;
+}
+
+/* 원 */
+.circle {
+  width: 100px;
+  height: 100px;
+  background: black;
+  border-radius: 50%;
+  opacity: 10%;
+}
+
+.modal {
+  background-color: #7AAACE;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.2); /* opacity 50% 느낌 */
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
