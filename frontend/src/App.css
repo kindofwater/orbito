@@ -1,7 +1,48 @@
+
 body{
   background-color: #7AAACE;
+  user-select: none;        /* 텍스트 선택 막기 */
+  -webkit-user-select: none;
 }
 
+
+.flexbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.game_button {
+  margin-top: 20px;
+
+  width: 90px;
+  min-height: 30px;
+
+  padding: 15px;
+  border-radius: 20px;
+  background: #F7F8F0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.game_button:active{
+  margin-top: 20px;
+
+  width: 90px;
+  min-height: 30px;
+
+  padding: 15px;
+  border-radius: 20px;
+  background: grey;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
 
 .div_all {
   margin: 0;
@@ -17,7 +58,7 @@ body{
   margin-top: 20px;
 
   width: 320px;
-  min-height: 120px;
+  min-height: 30px;
 
   padding: 15px;
   border-radius: 20px;
@@ -60,8 +101,23 @@ body{
   background-color: #7AAACE;
   padding: 20px;
   border-radius: 10px;
-  width: 300px;
+  width: 1000px;
   position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;}
+
+.section img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
 }
 
 .overlay {
@@ -76,4 +132,12 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
