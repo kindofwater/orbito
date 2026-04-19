@@ -142,7 +142,7 @@ class Orbito :
 
 class Board :
     def __init__(self) :
-        self.Board = [[0,0,0,0] for _ in range(4)]
+        self.Board = [[0,1,0,2] for _ in range(4)]
     def set_Board(self, pos1, pos2, player_id) :
         self.Board[ord(pos1) - ord('A')][pos2 - 1] = player_id
     def get_Board(self, pos1, pos2) :
