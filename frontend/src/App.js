@@ -5,7 +5,7 @@ import logo from "./logo.svg"
 
 function App() {
   const Newarray = Array(16).fill(0);
-  const [gameState, setgameState] = useState("start");
+  const [gameState, setgameState] = useState("Start");
   const [NextState, setNextState] = useState("PostGame")
   const [showModal, setshowModal] = useState(false);
   const [HeaderMsg, setHeaderMsg] = useState("Welcome to Game")
@@ -64,6 +64,7 @@ function App() {
             // let the board display!
             ///
             setHeaderMsg("Addition phase, Select empty place to put marble")
+            setNextState("Addition_confirm")
             setBrdState(board)
             setStBtnTxt("Confirm") /// we need to consider deactivate button
             //  till user select their place to put marble
@@ -73,6 +74,8 @@ function App() {
             
             
 
+          }else if (gameState === "Addition_confirm"){
+            
           }
           else{
             setHeaderMsg("Failed to fetch, check your server")
@@ -151,6 +154,7 @@ function GameScreen({ StateButtonClick, showModal,
         Boardstate={Boardstate}
         />
         <Clicklayer
+        Boardstate={Boardstate}
         />
       </div>
 
@@ -173,25 +177,32 @@ return(
 )
 }
 
-function ClickUnit() {
-  const [ishovered, setIshovered] = useS2tate(false);
-  return (<div 
-    className={`click${ishovered ? 'visible' : ''}`} // 띄어쓰기 추가!
-    onMouseEnter={() => setIshovered(true)} 
-    onMouseLeave={() => setIshovered(false)}
+function ClickUnit({ isfixed, onClick }) {
+  const [ishovered, setIshovered] = useState(false);
+
+  return (
+    <div
+      className={`click ${ishovered || isfixed ? "visible" : ""}`}
+      onMouseEnter={() => setIshovered(true)}
+      onMouseLeave={() => setIshovered(false)}
+      onClick={onClick}
     ></div>
   );
 }
 
-function Clicklayer(){
-  const [ishovered, setIshovered] = useState(false);
-  return(
-  <div className="click-layer">
-  {[...Array(16)].map((_,i) => (
-          <ClickUnit key={`click-${i}`} 
-          onClick 
-          />))} </div>
-  )
+function Clicklayer({Boardstate}) {
+  const [fixedIndex, setFixedIndex] = useState(null);
+  return (
+    <div className="click-layer">
+      {Boardstate.map((item, i) => (
+        <ClickUnit
+          key={`click-${i}`}
+          isfixed={fixedIndex === i}
+          onClick={() => {item === 0 && (setFixedIndex((prev) => (prev === i ? null : i)))}}
+        />
+      ))}
+    </div>
+  );
 }
 
 

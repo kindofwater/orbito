@@ -195,14 +195,13 @@ body {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-  padding: 10px;
+  gap: 15px;
+  padding: 20px;
   box-sizing: border-box;
 
   justify-items: center; /* 중앙 정렬 추가 */
   align-items: center;   /* 중앙 정렬 추가 */
-
-  pointer-events: auto; /* 실제 클릭은 밑에 있는 요소가 받도록 */
+  pointer-events: auto;
 }
 
 .click {
@@ -210,20 +209,14 @@ body {
   height: 100px;
   background-color: #00000000;
   border-radius: 50%;
-  border: 5px solid #00000000;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1네5);
+  box-sizing: border-box;
   opacity : 0;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.clickvisible{
-  width: 100px;
-  height: 100px;
-  background-color: #00000000;
-  border-radius: 50%;
+.visible{
   border: 5px solid #81B29A;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   opacity: 1;
   visibility: visible;
 }
