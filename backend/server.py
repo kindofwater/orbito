@@ -36,11 +36,13 @@ def BoardCall():
     try:
         session_id = request.cookies.get("session_id")
         target = games[session_id]
+        id = target.get_player_id()
         for i in range(4) :
             for j in range(4) :
                 status.append(target.get_Board(i,j))
         response= make_response(jsonify({"success" : True,
-                                         "board" : status,}))
+                                         "board" : status,
+                                         "turn" : id}))
     except:
         session_id = request.cookies.get("session_id")
         target = games[session_id]
@@ -49,6 +51,25 @@ def BoardCall():
         Error_log.append({"type" : "SessionID_Finding_Failure"}) 
     finally:
         return response
+
+@app.route("/addition", methods=["POST"])
+def addition():
+    data = request.get_json()
+    index = data.get("index")
+    session_id = request.cookies.get("session_id")
+    target_board = games.get(session_id)
+
+    response = make_response(jsonify({"success" : True,
+    }))
+    return response
+
+
+
+@app.route("/wincheck", methods=["GET"])
+def wincheck():
+
+    # should change player_id
+    return 0
 
 if __name__ == "__main__" :
     app.run(debug=True)

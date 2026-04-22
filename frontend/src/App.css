@@ -215,6 +215,14 @@ body {
   transition: all 0.2s ease;
 }
 
+.add{
+  border: 5px solid #81B29A;
+}
+
+.Move{
+  border: 5px solid #E07A5F;
+}
+
 .visible{
   border: 5px solid #81B29A;
   opacity: 1;
