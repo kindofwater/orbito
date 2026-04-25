@@ -39,12 +39,12 @@ function App() {
         });
       }else if (gameState === "Before_Moving"){
         Getboard()
-        .then(({success, board, id})=>{
+        .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
             setBtnActive(false)
-            setHeaderMsg(`moving phase, select opponent marbles to move, ${id === 1 ? "White.":"Black."}`)
+            setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
             setBrdState(board)
             setStBtnTxt("Confirm")             
             setNextState("WhereTo_Moving")
@@ -63,11 +63,11 @@ function App() {
       }
       else if (gameState === "Addition"){
         Getboard()
-        .then(({success, board})=>{
+        .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
-            setHeaderMsg("Addition phase, Select empty place to put marble")
+            setHeaderMsg(`Addition phase, Select empty place to put marble, ${turn === 1 ? "White.":"Black."}`)
             setClickMode("Add")
             setNextState("Addition_confirm")
             setBrdState(board)
@@ -119,21 +119,29 @@ function App() {
         ///GET
       }else if (gameState === "Wincheck"){
         Get_Win()
-        .then((winner, board)=>{
-          if(winner === 0){
-            setgameState("Before_Moving")
-          }
-          else if (winner === 1){
-            setHeaderMsg("Congrat!!! Winner plyer white")
-            setNextState("Start")
+        .then(({success, winner, Board})=>{
+          if(success){
+            setBrdState(Board)
+            if(winner === 0){
+              setgameState("Before_Moving")
+            }
+            else if (winner === 1){
+
+              setHeaderMsg("Congrat!!! Winner plyer white")
+              setNextState("Start")
+              setStBtnTxt("Try again")
+              panpare();
+            }
+            else if (winner === 2){
+              setHeaderMsg("Congrat!!! Winner plyer black")
+              setNextState("Start")
+              setStBtnTxt("Try again")
+              panpare();
+            }
+          } else{
+            setHeaderMsg("Failed to fetch, check your server")
             setStBtnTxt("Try again")
-            panpare();
-          }
-          else if (winner === 2){
-            setHeaderMsg("Congrat!!! Winner plyer black")
-            setNextState("Start")
-            setStBtnTxt("Try again")
-            panpare();
+            setNextState(gameState)
           }
         })
       }
