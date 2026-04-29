@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import logo from "./logo.svg"
+import Toast from "./Toast"
 
 
 function App() {
@@ -10,12 +11,14 @@ function App() {
   const [gameState, setgameState] = useState("Start");
   const [NextState, setNextState] = useState(null)
   const [showModal, setshowModal] = useState(false);
-  const [HeaderMsg, setHeaderMsg] = useState("Welcome to Game")
+  const [HeaderMsg, setHeaderMsg] = useState("Welcome to Game!")
   const [Boardstate, setBrdState] = useState(Newarray)
   const [StateButtonText, setStBtnTxt] = useState("Game Start!")
   const [fixedIndex, setFixedIndex] = useState(null);
   const [BtnAct, setBtnActive] = useState(true);
   const [clickMode, setClickMode] = useState("none");
+  const [toast, setToast] = useState(null);
+  const [Btnmisclickmsg, SetBMSCMsg] = useState(null);
 
   useEffect(()=>{ // for the animation
       setshowModal(true);
@@ -25,11 +28,12 @@ function App() {
 
   useEffect(() => {
       if(gameState === "Start"){
+        setToast("It's time to see!")
         setNextState("Post_Game")
       }else if (gameState === "Post_Game") {
-        Post_Game().then((success) => {
+        Post_Game({setToast}).then((success) => {
           if (success) {
-            setNextState("Addition")
+            setgameState("Addition")
             setHeaderMsg("As First move, moving phase skipped.");
             setStBtnTxt("OK")
             /// wait 2 seconds, how about button filling motion? with acceleration
@@ -41,12 +45,13 @@ function App() {
         });
       }else if (gameState === "Before_Moving"){
         setFixedIndex(null)
-        Getboard()
+        Getboard({setToast})
         .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
             setBtnActive(false)
+            SetBMSCMsg("Choose opponent marble first!")
             setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
             setBrdState(board)
             setStBtnTxt("Confirm")             
@@ -60,11 +65,11 @@ function App() {
             setNextState(gameState)
           }
         })
-
       }else if (gameState === "WhereTo_Moving"){
         fromRef.current = fixedIndex
         setFixedIndex(null)
         setBtnActive(false)
+        SetBMSCMsg("Choose place to put first!")
         setHeaderMsg(`OK, Now select place to put opponent marbles.`)
         setStBtnTxt("Confirm")             
         setNextState("Moving_Confirm")
@@ -73,7 +78,7 @@ function App() {
       }else if (gameState === "Moving_Confirm"){
         ToRef.current = fixedIndex
         setClickMode("none")
-        Post_Moving(fromRef.current, ToRef.current)
+        Post_Moving({ From: fromRef.current, To: ToRef.current, setToast })
         .then((success)=>{
           if(success){
             setgameState("Addition")
@@ -83,16 +88,17 @@ function App() {
             setNextState("Before_Moving")
           }
         })
-      }
-      else if (gameState === "Addition"){
+      }else if (gameState === "Addition"){
+        
         setFixedIndex(null)
-        Getboard()
+        Getboard({ setToast })
         .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
             setHeaderMsg(`Addition phase, Select empty place to put marble, ${turn === 1 ? "White.":"Black."}`)
             setBtnActive(false)
+            SetBMSCMsg("Choose place to put first!")
             setClickMode("Add")
             setNextState("Addition_confirm")
             setBrdState(board)
@@ -107,9 +113,9 @@ function App() {
             setStBtnTxt("Try again")
             setNextState(gameState)
           }})
-        }else if (gameState === "Addition_confirm"){
+      }else if (gameState === "Addition_confirm"){
           setClickMode("none")
-          Post_Addition(fixedIndex)
+          Post_Addition({ fixedIndex, setToast })
           .then((success)=>{
             if(success){
               setgameState("Before_Button")
@@ -119,8 +125,8 @@ function App() {
               setNextState(gameState)
             }
           })
-        }else if (gameState === "Before_Button"){
-        Getboard()
+      }else if (gameState === "Before_Button"){
+        Getboard({ setToast })
         .then(({success, board})=>{
           if(success) {
             // let the board display!
@@ -143,7 +149,7 @@ function App() {
         /// auto play
         ///GET
       }else if (gameState === "Wincheck"){
-        Get_Win()
+        Get_Win({ setToast })
         .then(({success, winner, Board})=>{
           if(success){
             setBrdState(Board)
@@ -183,7 +189,7 @@ function App() {
 
     return(
     <GameScreen
-    StateButtonClick={()=>{if(BtnAct){setgameState(NextState)}}}
+    StateButtonClick={()=>{if(BtnAct){setgameState(NextState)}else{setToast(Btnmisclickmsg)}}}
     StateButtonText = {StateButtonText}
     HeaderMsg={HeaderMsg}
     setBtnActive={setBtnActive}
@@ -200,6 +206,8 @@ function App() {
     fixedIndex={fixedIndex}
     setFixedIndex={setFixedIndex}
     clickMode={clickMode}
+    toast={toast}
+    setToast={setToast}
 
     />)
   
@@ -233,7 +241,7 @@ function Userguide({onCloseModal, showModal}){
 function GameScreen({ StateButtonClick, showModal, 
   onCloseModal, HeaderMsg, StateButtonText,
   Boardstate, fixedIndex, setFixedIndex,
-setBtnActive, clickMode}){
+setBtnActive, BtnAct, clickMode, toast, setToast}){
   return (
     <div className = "div_all">
       <div className="flexbox">
@@ -258,12 +266,20 @@ setBtnActive, clickMode}){
         setFixedIndex={setFixedIndex}
         setBtnActive={setBtnActive}
         clickMode={clickMode}
+        BtnAct = {BtnAct}
         />}
       </div>
 
       <Userguide 
       onCloseModal={onCloseModal}
       showModal={showModal}/>
+
+      {toast !== null && (
+        <Toast
+          message = {toast}
+          onClose = {() => setToast(null)}
+          />
+      )}
       </div>
       )
       }
@@ -293,7 +309,8 @@ function ClickUnit({ isfixed, onClick, clickMode }) {
   );
 }
 
-function Clicklayer({Boardstate, fixedIndex, setFixedIndex, setBtnActive, clickMode}) {
+function Clicklayer({Boardstate, fixedIndex, setFixedIndex, 
+  setBtnActive, clickMode, BtnAct}) {
   
   return (
     <div className="click-layer">
@@ -309,7 +326,7 @@ function Clicklayer({Boardstate, fixedIndex, setFixedIndex, setBtnActive, clickM
             else{
               item === 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
             }
-            setBtnActive(true)
+            setBtnActive(!BtnAct)
           }}
         />
       ))}
@@ -321,7 +338,8 @@ function panpare(){
   return null;
 }
 
-async function Post_Game() {
+async function Post_Game({setToast}) {
+  try {
   const res = await fetch("http://localhost:5000/game", {
     method: "POST",
     headers: {
@@ -329,67 +347,133 @@ async function Post_Game() {
     },
     credentials: "include",
   });
+
+  if(!res.ok){
+    setToast(`Failed to connect, Error code : ${res.status}`)
+  }
+
   const data = await res.json();
-  return data;
+  return data;}
+  catch (error) {
+    console.error("Failed to get data", error.message);
+
+    if(error.message === "Failed to fetch"){
+      setToast("Failed to connect server, contact Choi")
+    }else{
+      setToast("Unknown error found, I don't know too...")
+    }
+    return {"success":false,}
+  }
 }
 
-async function Getboard(){
+async function Getboard({setToast}){
+  try {
   const res = await fetch("http://localhost:5000/game", {
     method: "GET",
     credentials: "include",
   });
+
+  if(!res.ok){
+    setToast(`Failed to connect, Error code : ${res.status}`)
+  }
+
   const data = await res.json();
-  return data;
+  return data;}
+  catch (error) {
+    console.error("Failed to get data", error.message);
+
+    if(error.message === "Failed to fetch"){
+      setToast("Failed to connect server, contact Choi")
+    }else{
+      setToast("Unknown error found, I don't know too...")
+    }
+    return {"success":false,}
+  }
 }
 
-async function Post_Addition(fixedIndex){
-  const res = await fetch("http://localhost:5000/addition", {
+async function Post_Addition({fixedIndex, setToast}){
+  try {
+    const res = await fetch("http://localhost:5000/addition", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ index: fixedIndex }),
+    body: JSON.stringify({index: fixedIndex}),
     credentials: "include",
   });
+
+  if(!res.ok){
+    setToast(`Failed to connect, Error code : ${res.status}`)
+  }
+
   const data = await res.json();
-  return data;
+  return data;}
+  catch (error) {
+    console.error("Failed to get data", error.message);
+
+    if(error.message === "Failed to fetch"){
+      setToast("Failed to connect server, contact Choi")
+    }else{
+      setToast("Unknown error found, I don't know too...")
+    }
+    return {"success":false,}
+  }
 }
 
-async function Get_Win(){
-  const res = await fetch("http://localhost:5000/wincheck", {
+async function Get_Win({setToast}){
+
+  try {
+    const res = await fetch("http://localhost:5000/wincheck", {
     method: "GET",
     credentials: "include",
   });
+
+  if(!res.ok){
+    setToast(`Failed to connect, Error code : ${res.status}`)
+  }
+
   const data = await res.json();
-  return data;
+  return data;}
+  catch (error) {
+    console.error("Failed to get data", error.message);
+
+    if(error.message === "Failed to fetch"){
+      setToast("Failed to connect server, contact Choi")
+    }else{
+      setToast("Unknown error found, I don't know too...")
+    }
+    return {"success":false,}
+  }
 }
 
-async function Post_Moving(From, To){
-  const res = await fetch("http://localhost:5000/Moving", {
+async function Post_Moving({From, To, setToast}){
+    try {
+    const res = await fetch("http://localhost:5000/Moving", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ From: From, To: To }),
+    body: JSON.stringify({From: From, To: To}),
     credentials: "include",
   });
+
+  if(!res.ok){
+    setToast(`Failed to connect, Error code : ${res.status}`)
+  }
+
   const data = await res.json();
-  return data;
+  return data;}
+  catch (error) {
+    console.error("Failed to get data", error.message);
+
+    if(error.message === "Failed to fetch"){
+      setToast("Failed to connect server, contact Choi")
+    }else{
+      setToast("Unknown error found, I don't know too...")
+    }
+    return {"success":false,}
+  }
 }
 
 export default App;
 
-
-/* function TestScreen(){
-  return(<div className = "div_all">
-      <div className="header-box">
-        This is test page, I don't think it's supposed to pop up here.zz <br></br>
-      </div>
-      <div className="grid-box">
-    <div className="circle"></div><div className="circle"></div><div className="circle"></div><div className="circle"></div>
-    <div className="circle"></div><div className="circle"></div><div className="circle"></div><div className="circle"></div>
-    <div className="circle"></div><div className="circle"></div><div className="circle"></div><div className="circle"></div>
-    <div className="circle"></div><div className="circle"></div><div className="circle"></div><div className="circle"></div>
-      </div>
-    </div>)
-} */

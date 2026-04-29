@@ -126,7 +126,6 @@ def wincheck():
                                           "winner" : winner,
                                           "Board" : status}))
     return response
-    # should change player_id 
 
 if __name__ == "__main__" :
     app.run(debug=True)

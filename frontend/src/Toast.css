@@ -1,0 +1,76 @@
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%; /* 모바일 대응: 기본 너비를 화면의 90%로 설정 */
+  max-width: 350px; /* 데스크탑 등 큰 화면에서의 최대 너비 제한 */
+  min-height: 50px;
+  background-color: #e07b5f85;
+  color: #f0efe8;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 모바일 전용 미세 조정 (화면 너비 480px 이하) */
+@media (max-width: 480px) {
+  .toast-container {
+    bottom: 10px; /* 모바일에서는 여백을 조금 줄임 */
+    width: 95%;
+  }
+  
+  .toast-content {
+    font-size: 13px; /* 모바일에서 텍스트 크기 살짝 조정 */
+    padding: 8px 12px;
+  }
+}
+
+.toast-container.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-container.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+}
+
+.toast-content {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  font-size: 20px;
+}
+
+.toast-close-btn {
+  background: none;
+  border: none;
+  color: #f0efe8;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 0 0 10px;
+  line-height: 1;
+}
+
+.toast-progress-bar {
+  height: 4px;
+  background-color: #E07A5F;
+  width: 100%;
+  animation: shrink linear forwards;
+}
+
+@keyframes shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}

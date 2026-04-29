@@ -1,8 +1,14 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+div {
+  font-size : 24px
+}
 
 body {
   background-color: #f2cc8f;
   user-select: none;
   -webkit-user-select: none;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
 }
 
 .flexbox {
@@ -14,7 +20,7 @@ body {
 .game_button {
   margin-top: 20px;
   width: 90px;
-  min-height: 30px;
+  min-height: 50px;
   padding: 10px 15px; /* 수직 패딩 조정 */
   border-radius: 20px;
   background: #f4f1de;
@@ -35,7 +41,7 @@ body {
 
 .div_all {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +51,7 @@ body {
 .header-box {
   margin-top: 20px;
   width: 320px;
-  min-height: 30px;
+  min-height: 50px;
   padding: 10px 15px; /* 수직 패딩 조정 */
   border-radius: 20px;
   background: #f4f1de;
