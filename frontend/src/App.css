@@ -209,13 +209,13 @@ body {
   height: 100px;
   background-color: #00000000;
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1네5);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1,5);
   box-sizing: border-box;
   opacity : 0;
   transition: all 0.2s ease;
 }
 
-.add{
+.Add{
   border: 5px solid #81B29A;
 }
 
@@ -224,7 +224,6 @@ body {
 }
 
 .visible{
-  border: 5px solid #81B29A;
   opacity: 1;
   visibility: visible;
 }

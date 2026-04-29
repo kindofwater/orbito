@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import logo from "./logo.svg"
 
 
 function App() {
+  const fromRef= useRef(null)
+  const ToRef = useRef(null)
   const Newarray = Array(16).fill(0);
   const [gameState, setgameState] = useState("Start");
   const [NextState, setNextState] = useState(null)
@@ -38,6 +40,7 @@ function App() {
           }
         });
       }else if (gameState === "Before_Moving"){
+        setFixedIndex(null)
         Getboard()
         .then(({success, board, turn})=>{
           if(success) {
@@ -59,15 +62,37 @@ function App() {
         })
 
       }else if (gameState === "WhereTo_Moving"){
-        
+        fromRef.current = fixedIndex
+        setFixedIndex(null)
+        setBtnActive(false)
+        setHeaderMsg(`OK, Now select place to put opponent marbles.`)
+        setStBtnTxt("Confirm")             
+        setNextState("Moving_Confirm")
+        setClickMode("Add")
+
+      }else if (gameState === "Moving_Confirm"){
+        ToRef.current = fixedIndex
+        setClickMode("none")
+        Post_Moving(fromRef.current, ToRef.current)
+        .then((success)=>{
+          if(success){
+            setgameState("Addition")
+          }else{
+            setHeaderMsg("Failed to fetch, check with your server")
+            setStBtnTxt("Try again")
+            setNextState("Before_Moving")
+          }
+        })
       }
       else if (gameState === "Addition"){
+        setFixedIndex(null)
         Getboard()
         .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
             setHeaderMsg(`Addition phase, Select empty place to put marble, ${turn === 1 ? "White.":"Black."}`)
+            setBtnActive(false)
             setClickMode("Add")
             setNextState("Addition_confirm")
             setBrdState(board)
@@ -138,6 +163,12 @@ function App() {
               setStBtnTxt("Try again")
               panpare();
             }
+            else if (winner === 3){
+              setHeaderMsg("Draw, wanna Try again?")
+              setNextState("Start")
+              setStBtnTxt("Try again")
+              panpare();
+            }
           } else{
             setHeaderMsg("Failed to fetch, check your server")
             setStBtnTxt("Try again")
@@ -152,7 +183,7 @@ function App() {
 
     return(
     <GameScreen
-    StateButtonClick={()=>{setgameState(NextState)}}
+    StateButtonClick={()=>{if(BtnAct){setgameState(NextState)}}}
     StateButtonText = {StateButtonText}
     HeaderMsg={HeaderMsg}
     setBtnActive={setBtnActive}
@@ -202,16 +233,16 @@ function Userguide({onCloseModal, showModal}){
 function GameScreen({ StateButtonClick, showModal, 
   onCloseModal, HeaderMsg, StateButtonText,
   Boardstate, fixedIndex, setFixedIndex,
-setBtnActive, BtnAct, clickMode}){
+setBtnActive, clickMode}){
   return (
     <div className = "div_all">
       <div className="flexbox">
         <div className="header-box">
           {HeaderMsg}
         </div>
-        {BtnAct && <div className="game_button" onClick={StateButtonClick}>
+        <div className="game_button" onClick={StateButtonClick}>
           {StateButtonText}
-        </div>}
+        </div>
       </div>
 
       <div className="grid-box">
@@ -271,7 +302,13 @@ function Clicklayer({Boardstate, fixedIndex, setFixedIndex, setBtnActive, clickM
           key={`click-${i}`}
           isfixed={fixedIndex === i}
           clickMode={clickMode}
-          onClick={() => {item === 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
+          onClick={() => {
+            if(clickMode === "Move"){
+              item !== 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
+            }
+            else{
+              item === 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
+            }
             setBtnActive(true)
           }}
         />
@@ -321,6 +358,19 @@ async function Post_Addition(fixedIndex){
 async function Get_Win(){
   const res = await fetch("http://localhost:5000/wincheck", {
     method: "GET",
+    credentials: "include",
+  });
+  const data = await res.json();
+  return data;
+}
+
+async function Post_Moving(From, To){
+  const res = await fetch("http://localhost:5000/Moving", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ From: From, To: To }),
     credentials: "include",
   });
   const data = await res.json();

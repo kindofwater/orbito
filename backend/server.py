@@ -84,7 +84,26 @@ def addition():
     
     return response
 
-
+@app.route("/Moving", methods=["POST"])
+def Moving():
+    data = request.get_json()
+    From, To = data.get("From"), data.get("To")
+    session_id = request.cookies.get("session_id")
+    From_col, From_row = From//4, From%4
+    To_col, To_row = To//4, To%4
+    try :
+        games[session_id].set_Board(From_col, From_row, 0)
+        games[session_id].set_Board(To_col, To_row, 
+                                    3 - games.get(session_id).get_player_id())
+        success = True
+    except Exception as e:
+        success = False
+        print("There is *** Error in POST /Moving and Logged")
+        Error_log.append({"type" : e}) 
+    finally :
+        response = make_response(jsonify({"success" : success,}))
+    
+    return response
 
 @app.route("/wincheck", methods=["GET"])
 def wincheck():
@@ -110,5 +129,5 @@ def wincheck():
     # should change player_id 
 
 if __name__ == "__main__" :
-    app.run(debug=False)
+    app.run(debug=True)
     

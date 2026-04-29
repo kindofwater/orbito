@@ -164,7 +164,6 @@ class Board :
         if((self.Board[0][3] == self.Board[1][2] == self.Board[2][1] == self.Board[3][0]) 
             and self.Board[3][0] != 0) :
             return self.Board[3][0]
-        
         return 0
     
     def Button(self) :
