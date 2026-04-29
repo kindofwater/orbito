@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
 import "./App.css";
 import logo from "./logo.svg"
 import Toast from "./Toast"
 
+let button_array = [1,2,3,7, 0, 6, 10, 11, 4, 5, 9, 15, 8, 12, 13, 14]
 
 function App() {
   const fromRef= useRef(null)
@@ -19,6 +21,7 @@ function App() {
   const [clickMode, setClickMode] = useState("none");
   const [toast, setToast] = useState(null);
   const [Btnmisclickmsg, SetBMSCMsg] = useState(null);
+  const [Animestate, SetAnimestate] = useState(false);
 
   useEffect(()=>{ // for the animation
       setshowModal(true);
@@ -28,13 +31,12 @@ function App() {
 
   useEffect(() => {
       if(gameState === "Start"){
-        setToast("It's time to see!")
         setNextState("Post_Game")
       }else if (gameState === "Post_Game") {
         Post_Game({setToast}).then((success) => {
           if (success) {
-            setgameState("Addition")
-            setHeaderMsg("As First move, moving phase skipped.");
+            setNextState("Addition")
+            setHeaderMsg("As First turn, moving phase skipped.");
             setStBtnTxt("OK")
             /// wait 2 seconds, how about button filling motion? with acceleration
           } else {
@@ -50,6 +52,7 @@ function App() {
           if(success) {
             // let the board display!
             ///
+            SetAnimestate(false)
             setBtnActive(false)
             SetBMSCMsg("Choose opponent marble first!")
             setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
@@ -152,9 +155,14 @@ function App() {
         Get_Win({ setToast })
         .then(({success, winner, Board})=>{
           if(success){
+
+            //// 여기서 다음 보드 정보를 어떻게 넘기면, 이 div가 어느 좌표로 이동하게 해야함...
+            SetAnimestate(true)
             setBrdState(Board)
             if(winner === 0){
-              setgameState("Before_Moving")
+              setHeaderMsg("No decision, keep going")
+              setNextState("Before_Moving")
+              setStBtnTxt("OK")
             }
             else if (winner === 1){
 
@@ -196,7 +204,7 @@ function App() {
 
     // Conditional Button Active
     BtnAct={BtnAct}
-    
+    Animestate={Animestate}
     
     // For the Start Screen
     showModal={showModal}
@@ -241,7 +249,7 @@ function Userguide({onCloseModal, showModal}){
 function GameScreen({ StateButtonClick, showModal, 
   onCloseModal, HeaderMsg, StateButtonText,
   Boardstate, fixedIndex, setFixedIndex,
-setBtnActive, BtnAct, clickMode, toast, setToast}){
+setBtnActive, BtnAct, clickMode, toast, setToast, Animestate}){
   return (
     <div className = "div_all">
       <div className="flexbox">
@@ -259,6 +267,7 @@ setBtnActive, BtnAct, clickMode, toast, setToast}){
         ))}
         <Balllayer 
         Boardstate={Boardstate}
+        Animestate={Animestate}
         />
         {clickMode !== "none" && <Clicklayer
         Boardstate={Boardstate}
@@ -286,14 +295,28 @@ setBtnActive, BtnAct, clickMode, toast, setToast}){
 
 
 
-function Balllayer({ Boardstate }){
-return(
-<div className="ball-layer">
-{Boardstate.map((item, i) => (
-  <div key={`ball-${i}`} className="ball-container">
-    <div className={`small-ball-${item}`}></div>
-  </div>))}</div>
-)
+function Balllayer({ Boardstate, Animestate }) {
+  return (
+    <div className="ball-layer">
+      {Boardstate.map((item, i) => (
+        <div key={`container-${i}`} className="ball-container">
+          {item !== 0 && (
+            <motion.div
+              layout
+              // Animestate에 따라 고유 ID를 부여하여 Framer Motion이 이동을 추적하게 합니다.
+              layoutId={Animestate ? `${button_array.indexOf(i)}` : `${i}`}
+              className={`small-ball-${item}`}
+              transition={{
+                type: "spring",
+                stiffness: 250,
+                damping: 25,
+              }}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function ClickUnit({ isfixed, onClick, clickMode }) {
@@ -321,12 +344,17 @@ function Clicklayer({Boardstate, fixedIndex, setFixedIndex,
           clickMode={clickMode}
           onClick={() => {
             if(clickMode === "Move"){
-              item !== 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
+              if(item !== 0){
+                setFixedIndex((prev) => (prev === i ? null : i))
+                setBtnActive(!BtnAct)
+              }
             }
             else{
-              item === 0 && (setFixedIndex((prev) => (prev === i ? null : i)))
+              if(item === 0) {
+                setFixedIndex((prev) => (prev === i ? null : i))
+                setBtnActive(!BtnAct)
+              }
             }
-            setBtnActive(!BtnAct)
           }}
         />
       ))}
