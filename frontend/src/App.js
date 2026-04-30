@@ -298,23 +298,26 @@ setBtnActive, BtnAct, clickMode, toast, setToast, Animestate}){
 function Balllayer({ Boardstate, Animestate }) {
   return (
     <div className="ball-layer">
-      {Boardstate.map((item, i) => (
-        <div key={`container-${i}`} className="ball-container">
-          {item !== 0 && (
-            <motion.div
-              layout
-              // Animestate에 따라 고유 ID를 부여하여 Framer Motion이 이동을 추적하게 합니다.
-              layoutId={Animestate ? `${button_array.indexOf(i)}` : `${i}`}
-              className={`small-ball-${item}`}
-              transition={{
-                type: "spring",
-                stiffness: 250,
-                damping: 25,
-              }}
-            />
-          )}
-        </div>
-      ))}
+      {Boardstate.map((item, i) => {
+        const marbleId = `marble-${Animestate ? button_array[i] : i}`;
+        return (
+          <div key={`container-${i}`} className="ball-container">
+            {item !== 0 && (
+              <motion.div
+                key={marbleId}
+                layout
+                layoutId={marbleId}
+                className={`small-ball-${item}`}
+                transition={{
+                  type: "spring",
+                  stiffness: 250,
+                  damping: 30,
+                }}
+              />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
