@@ -46,13 +46,13 @@ function App() {
           }
         });
       }else if (gameState === "Before_Moving"){
+        SetAnimestate(false)
         setFixedIndex(null)
         Getboard({setToast})
         .then(({success, board, turn})=>{
           if(success) {
             // let the board display!
             ///
-            SetAnimestate(false)
             setBtnActive(false)
             SetBMSCMsg("Choose opponent marble first!")
             setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
@@ -308,11 +308,11 @@ function Balllayer({ Boardstate, Animestate }) {
                 layout
                 layoutId={marbleId}
                 className={`small-ball-${item}`}
-                transition={{
+                transition={Animestate ? {
                   type: "spring",
                   stiffness: 250,
                   damping: 30,
-                }}
+                } : {duration : 0}}
               />
             )}
           </div>
