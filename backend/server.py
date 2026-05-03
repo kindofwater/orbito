@@ -6,7 +6,7 @@ import util
 import atexit
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=["https://orbitohobby.vercel.app"])
+CORS(app, supports_credentials=True, origins=["orbitotrial-b80louv6x-hyeonsoo-chous-projects.vercel.app"])
 
 games = {}
 Error_log = []
@@ -110,7 +110,9 @@ def wincheck():
     session_id = request.cookies.get("session_id")
     status = []
     try :
-        games[session_id].Button()
+        games[session_id].Button(
+        
+        )
         winner = games[session_id].wincheck()
         games[session_id].change_player_id()
         success = True
