@@ -1,14 +1,14 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 div {
-  font-size : 24px
+  font-size : 24px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
 }
 
 body {
   background-color: #f2cc8f;
   user-select: none;
   -webkit-user-select: none;
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
 }
 
 .flexbox {
@@ -161,7 +161,7 @@ body {
   width: 1000px;
   position: relative;
   display: flex;
-  gap: 10px;
+  gap: 50px;
   flex-direction: row;
 }
 
@@ -169,7 +169,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .press-start {
@@ -178,17 +178,14 @@ body {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes blink {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
-}
-
 .section {
+  font-size : 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap : 1se0px;
+  text-align: center;
 }
 
 .section img {

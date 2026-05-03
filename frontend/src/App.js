@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
-import logo from "./logo.svg"
+import Exp1 from "./1.gif"
+import Exp2 from "./2.gif"
+import Exp3 from "./3.gif"
 import Toast from "./Toast"
 
 let button_array = [1,2,3,7, 0, 6, 10, 11, 4, 5, 9, 15, 8, 12, 13, 14]
@@ -13,7 +15,7 @@ function App() {
   const [gameState, setgameState] = useState("Start");
   const [NextState, setNextState] = useState(null)
   const [showModal, setshowModal] = useState(false);
-  const [HeaderMsg, setHeaderMsg] = useState("Welcome to Game!")
+  const [HeaderMsg, setHeaderMsg] = useState("오르비토에 오신 것을 환영함!")
   const [Boardstate, setBrdState] = useState(Newarray)
   const [StateButtonText, setStBtnTxt] = useState("Game Start!")
   const [fixedIndex, setFixedIndex] = useState(null);
@@ -23,7 +25,7 @@ function App() {
   const [Btnmisclickmsg, SetBMSCMsg] = useState(null);
   const [Animestate, SetAnimestate] = useState(false);
   const [turning, Setturn] = useState(1);
-  
+
 
   useEffect(()=>{ // for the animation
       setshowModal(true);
@@ -38,8 +40,8 @@ function App() {
         Post_Game({setToast}).then((success) => {
           if (success) {
             setNextState("Addition")
-            setHeaderMsg("As First turn, moving phase skipped.");
-            setStBtnTxt("OK")
+            setHeaderMsg("첫 턴이니까, 돌 옮기기는 스킵됨.");
+            setStBtnTxt("ㅇㅋ")
             /// wait 2 seconds, how about button filling motion? with acceleration
           } else {
             setHeaderMsg("Failed to fetch, check your server");
@@ -56,10 +58,10 @@ function App() {
             // let the board display!
             ///
 //             setBtnActive(false)
-            SetBMSCMsg("Choose opponent marble first!")
-            setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
+            SetBMSCMsg("상대 구슬을 고르셈!")
+            setHeaderMsg(`옮기기 차례, 옮기고 싶은 상대 공을 고르셈, ${turn === 1 ? "백 차례임.":"흑 차례임."}`)
             setBrdState(board)
-            setStBtnTxt("Confirm")             
+            setStBtnTxt("했음")             
             setNextState("WhereTo_Moving")
             setClickMode("Move")
             Setturn(turn)
@@ -75,9 +77,9 @@ function App() {
         fromRef.current = fixedIndex
         setFixedIndex(null)
 //         setBtnActive(false)
-        SetBMSCMsg("Choose place to put first!")
-        setHeaderMsg(`OK, Now select place to put opponent marbles.`)
-        setStBtnTxt("Confirm")
+        SetBMSCMsg("상대 거를 어디 놓을 지 고르셈!")
+        setHeaderMsg(`ㅇㅋ, 이제 그 돌을 어디에 놓을지 고르셈`)
+        setStBtnTxt("했음")
         setNextState("Moving_Confirm")
         setClickMode("Add")
 
@@ -102,13 +104,13 @@ function App() {
           if(success) {
             // let the board display!
             ///
-            setHeaderMsg(`Addition phase, Select empty place to put marble, ${turn === 1 ? "White.":"Black."}`)
+            setHeaderMsg(`이제 님 구슬을 놓을 차례, 어디 둘 지 고르셈, ${turn === 1 ? "백 차례임.":"흑 차례임."}`)
 //             setBtnActive(false)
-            SetBMSCMsg("Choose place to put first!")
+            SetBMSCMsg("어디 둘지 먼저 골라야 할 거 아잉교!")
             setClickMode("Add")
             setNextState("Addition_confirm")
             setBrdState(board)
-            setStBtnTxt("Confirm") /// we need to consider deactivate button
+            setStBtnTxt("했음") /// we need to consider deactivate button
             //  till user select their place to put marble
             
             // Is it good to POST in here?
@@ -137,7 +139,7 @@ function App() {
           if(success) {
             // let the board display!
             ///
-            setHeaderMsg("OK We'll push the button!")
+            setHeaderMsg("ㅇㅋ, 이제 버튼을 누르겠음.")
             setNextState("Wincheck")
             setBrdState(board)
             setStBtnTxt("OK!") /// we need to consider deactivate button
@@ -163,25 +165,25 @@ function App() {
             SetAnimestate(true)
             setBrdState(Board)
             if(winner === 0){
-              setHeaderMsg("No decision, keep going")
+              setHeaderMsg("계속 ㄱㄱ")
               setNextState("Before_Moving")
-              setStBtnTxt("OK")
+              setStBtnTxt("ㅇㅋ")
             }
             else if (winner === 1){
 
-              setHeaderMsg("Congrat!!! Winner plyer white")
+              setHeaderMsg("백 승!!!!!! ㅊㅋ")
               setNextState("Start")
               setStBtnTxt("Try again")
               panpare();
             }
             else if (winner === 2){
-              setHeaderMsg("Congrat!!! Winner plyer black")
+              setHeaderMsg("흑 승!!!! ㅊㅋ")
               setNextState("Start")
               setStBtnTxt("Try again")
               panpare();
             }
             else if (winner === 3){
-              setHeaderMsg("Draw, wanna Try again?")
+              setHeaderMsg("비김, 다시 하실?")
               setNextState("Start")
               setStBtnTxt("Try again")
               panpare();
@@ -244,16 +246,17 @@ function Userguide({onCloseModal, showModal}){
         <div className="modal-wrapper">
           <div className = "modal">
             <div className="section">
-              <img src ={logo} alt="explain"></img>
-              <p>section 1</p>
+              <img src ={Exp1} alt="explain"></img>
+              <p>이 게임은 가로, 세로, 대각 어디든 4줄을 먼저 만들면 이김 ㅇㅇ</p>
             </div>
             <div className="section">
-              <img src ={logo} alt="explain"></img>
-              <p>section 2</p>
+              <img src ={Exp2} alt="explain"></img>
+              <p>내 돌을 놓기 전에, 상대 돌이 있다면 턴마다 1개 다른 자리로 옮김</p>
             </div>
             <div className="section">
-              <img src ={logo} alt="explain"></img>
-              <p>section 3</p>
+              <img src ={Exp3} alt="explain"></img>
+              <p>내 돌을 놓으면, 가운데 버튼을 눌러 판을 회전 시켜야함. 
+                <br></br><br></br>이 때 한줄이 완성되면 승리</p>
             </div>
           </div>
           <div className="press-start">Press anywhere to start</div>
