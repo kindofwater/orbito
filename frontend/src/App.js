@@ -17,11 +17,12 @@ function App() {
   const [Boardstate, setBrdState] = useState(Newarray)
   const [StateButtonText, setStBtnTxt] = useState("Game Start!")
   const [fixedIndex, setFixedIndex] = useState(null);
-  const [BtnAct, setBtnActive] = useState(true);
+  // const [BtnAct, setBtnActive] = useState(true);
   const [clickMode, setClickMode] = useState("none");
   const [toast, setToast] = useState(null);
   const [Btnmisclickmsg, SetBMSCMsg] = useState(null);
   const [Animestate, SetAnimestate] = useState(false);
+  
 
   useEffect(()=>{ // for the animation
       setshowModal(true);
@@ -53,7 +54,7 @@ function App() {
           if(success) {
             // let the board display!
             ///
-            setBtnActive(false)
+//             setBtnActive(false)
             SetBMSCMsg("Choose opponent marble first!")
             setHeaderMsg(`moving phase, Select opponent marbles to move, ${turn === 1 ? "White.":"Black."}`)
             setBrdState(board)
@@ -71,10 +72,10 @@ function App() {
       }else if (gameState === "WhereTo_Moving"){
         fromRef.current = fixedIndex
         setFixedIndex(null)
-        setBtnActive(false)
+//         setBtnActive(false)
         SetBMSCMsg("Choose place to put first!")
         setHeaderMsg(`OK, Now select place to put opponent marbles.`)
-        setStBtnTxt("Confirm")             
+        setStBtnTxt("Confirm")
         setNextState("Moving_Confirm")
         setClickMode("Add")
 
@@ -100,7 +101,7 @@ function App() {
             // let the board display!
             ///
             setHeaderMsg(`Addition phase, Select empty place to put marble, ${turn === 1 ? "White.":"Black."}`)
-            setBtnActive(false)
+//             setBtnActive(false)
             SetBMSCMsg("Choose place to put first!")
             setClickMode("Add")
             setNextState("Addition_confirm")
@@ -197,13 +198,26 @@ function App() {
 
     return(
     <GameScreen
-    StateButtonClick={()=>{if(BtnAct){setgameState(NextState)}else{setToast(Btnmisclickmsg)}}}
+    StateButtonClick={()=>{
+      if(gameState === "Before_Moving" || gameState === "WhereTo_Moving" 
+        || gameState === "Addition"){
+        if(fixedIndex !== null){
+          setgameState(NextState)
+        }
+        else{
+          setToast(Btnmisclickmsg)
+        }
+      }
+      else{
+        setgameState(NextState)
+      }
+    }}
     StateButtonText = {StateButtonText}
     HeaderMsg={HeaderMsg}
-    setBtnActive={setBtnActive}
+//    setBtnActive={setBtnActive}
 
     // Conditional Button Active
-    BtnAct={BtnAct}
+//    BtnAct={BtnAct}
     Animestate={Animestate}
     
     // For the Start Screen
@@ -248,8 +262,8 @@ function Userguide({onCloseModal, showModal}){
 
 function GameScreen({ StateButtonClick, showModal, 
   onCloseModal, HeaderMsg, StateButtonText,
-  Boardstate, fixedIndex, setFixedIndex,
-setBtnActive, BtnAct, clickMode, toast, setToast, Animestate}){
+  Boardstate, fixedIndex, setFixedIndex, clickMode, toast, setToast, Animestate,
+  }){
   return (
     <div className = "div_all">
       <div className="flexbox">
@@ -273,9 +287,7 @@ setBtnActive, BtnAct, clickMode, toast, setToast, Animestate}){
         Boardstate={Boardstate}
         fixedIndex={fixedIndex}
         setFixedIndex={setFixedIndex}
-        setBtnActive={setBtnActive}
         clickMode={clickMode}
-        BtnAct = {BtnAct}
         />}
       </div>
 
@@ -335,8 +347,7 @@ function ClickUnit({ isfixed, onClick, clickMode }) {
   );
 }
 
-function Clicklayer({Boardstate, fixedIndex, setFixedIndex, 
-  setBtnActive, clickMode, BtnAct}) {
+function Clicklayer({Boardstate, fixedIndex, setFixedIndex, clickMode, }) {
   
   return (
     <div className="click-layer">
@@ -349,13 +360,11 @@ function Clicklayer({Boardstate, fixedIndex, setFixedIndex,
             if(clickMode === "Move"){
               if(item !== 0){
                 setFixedIndex((prev) => (prev === i ? null : i))
-                setBtnActive(!BtnAct)
               }
             }
             else{
               if(item === 0) {
                 setFixedIndex((prev) => (prev === i ? null : i))
-                setBtnActive(!BtnAct)
               }
             }
           }}
