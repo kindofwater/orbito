@@ -22,6 +22,7 @@ function App() {
   const [toast, setToast] = useState(null);
   const [Btnmisclickmsg, SetBMSCMsg] = useState(null);
   const [Animestate, SetAnimestate] = useState(false);
+  const [turning, Setturn] = useState(1);
   
 
   useEffect(()=>{ // for the animation
@@ -61,6 +62,7 @@ function App() {
             setStBtnTxt("Confirm")             
             setNextState("WhereTo_Moving")
             setClickMode("Move")
+            Setturn(turn)
 
           }
           else{
@@ -228,6 +230,7 @@ function App() {
     fixedIndex={fixedIndex}
     setFixedIndex={setFixedIndex}
     clickMode={clickMode}
+    turn = {turning}
     toast={toast}
     setToast={setToast}
 
@@ -238,22 +241,24 @@ function App() {
 function Userguide({onCloseModal, showModal}){
   if(showModal){
     return(<div className="overlay" onClick={onCloseModal}>
-        <div className = "modal">
-          <div className="section">
-            <img src ={logo} alt="explain"></img>
-            <p>section 1</p>
+        <div className="modal-wrapper">
+          <div className = "modal">
+            <div className="section">
+              <img src ={logo} alt="explain"></img>
+              <p>section 1</p>
+            </div>
+            <div className="section">
+              <img src ={logo} alt="explain"></img>
+              <p>section 2</p>
+            </div>
+            <div className="section">
+              <img src ={logo} alt="explain"></img>
+              <p>section 3</p>
+            </div>
           </div>
-          <div className="section">
-            <img src ={logo} alt="explain"></img>
-            <p>section 2</p>
-          </div>
-          <div className="section">
-            <img src ={logo} alt="explain"></img>
-            <p>section 3</p>
-          </div>
-          
+          <div className="press-start">Press anywhere to start</div>
         </div>
-        </div>)
+      </div>)
   }
   else{
     return(null)
@@ -263,6 +268,7 @@ function Userguide({onCloseModal, showModal}){
 function GameScreen({ StateButtonClick, showModal, 
   onCloseModal, HeaderMsg, StateButtonText,
   Boardstate, fixedIndex, setFixedIndex, clickMode, toast, setToast, Animestate,
+  turn,
   }){
   return (
     <div className = "div_all">
@@ -288,6 +294,7 @@ function GameScreen({ StateButtonClick, showModal,
         fixedIndex={fixedIndex}
         setFixedIndex={setFixedIndex}
         clickMode={clickMode}
+        turn={turn}
         />}
       </div>
 
@@ -347,7 +354,7 @@ function ClickUnit({ isfixed, onClick, clickMode }) {
   );
 }
 
-function Clicklayer({Boardstate, fixedIndex, setFixedIndex, clickMode, }) {
+function Clicklayer({Boardstate, fixedIndex, setFixedIndex, clickMode, turn}) {
   
   return (
     <div className="click-layer">
@@ -358,7 +365,7 @@ function Clicklayer({Boardstate, fixedIndex, setFixedIndex, clickMode, }) {
           clickMode={clickMode}
           onClick={() => {
             if(clickMode === "Move"){
-              if(item !== 0){
+              if(item === 3 - turn){
                 setFixedIndex((prev) => (prev === i ? null : i))
               }
             }
