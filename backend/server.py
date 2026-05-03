@@ -6,7 +6,7 @@ import util
 import atexit
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=["https://orbitohobby.vercel.app"])
+CORS(app, supports_credentials=True, origins=["https://orbitotrial.vercel.app"])
 
 games = {}
 Error_log = []
