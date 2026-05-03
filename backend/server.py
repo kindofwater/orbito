@@ -6,7 +6,7 @@ import util
 import atexit
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["https://orbitohobby.vercel.app"])
 
 games = {}
 Error_log = []
@@ -32,7 +32,7 @@ def game():
         session_id = str(uuid.uuid4())
         games[session_id] = util.Board()
         response = make_response(jsonify({"success" : True}))
-        response.set_cookie("session_id", session_id, samesite="Lax") 
+        response.set_cookie("session_id", session_id, samesite="None", secure=True) 
     except:
         session_id = str(uuid.uuid4())
         games[session_id] = util.Board()

@@ -6,6 +6,7 @@ import Exp2 from "./2.gif"
 import Exp3 from "./3.gif"
 import Toast from "./Toast"
 
+const API_URL = "https://orbito-2jlp.onrender.com";
 let button_array = [1,2,3,7, 0, 6, 10, 11, 4, 5, 9, 15, 8, 12, 13, 14]
 
 function App() {
@@ -390,7 +391,7 @@ function panpare(){
 
 async function Post_Game({setToast}) {
   try {
-  const res = await fetch("http://localhost:5000/game", {
+  const res = await fetch(`${API_URL}/game`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -418,7 +419,7 @@ async function Post_Game({setToast}) {
 
 async function Getboard({setToast}){
   try {
-  const res = await fetch("http://localhost:5000/game", {
+  const res = await fetch(`${API_URL}/game`, {
     method: "GET",
     credentials: "include",
   });
@@ -443,7 +444,7 @@ async function Getboard({setToast}){
 
 async function Post_Addition({fixedIndex, setToast}){
   try {
-    const res = await fetch("http://localhost:5000/addition", {
+    const res = await fetch(`${API_URL}/addition`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -473,7 +474,7 @@ async function Post_Addition({fixedIndex, setToast}){
 async function Get_Win({setToast}){
 
   try {
-    const res = await fetch("http://localhost:5000/wincheck", {
+    const res = await fetch(`${API_URL}/wincheck`, {
     method: "GET",
     credentials: "include",
   });
@@ -498,7 +499,7 @@ async function Get_Win({setToast}){
 
 async function Post_Moving({From, To, setToast}){
     try {
-    const res = await fetch("http://localhost:5000/Moving", {
+    const res = await fetch(`${API_URL}/Moving`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -526,4 +527,3 @@ async function Post_Moving({From, To, setToast}){
 }
 
 export default App;
-
