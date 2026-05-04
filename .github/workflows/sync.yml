@@ -1,0 +1,22 @@
+name: Sync to Repo B
+
+on:
+  push:
+    branches:
+      - main  # Repo A의 main 브랜치에 push될 때 실행
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo A
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Push to Repo B
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add target https://x-access-token:${{ secrets.GIT_SYNC_TOKEN }}@github.com/kindofwater/orbito_trial.git
+          git push -f target main

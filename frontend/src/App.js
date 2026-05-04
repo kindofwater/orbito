@@ -248,7 +248,7 @@ function Userguide({onCloseModal, showModal}){
           <div className = "modal">
             <div className="section">
               <img src ={Exp1} alt="explain"></img>
-              <p>이 게임은 가로, 세로, 대각 어디든 4줄을 먼저 만들면 이김 ㅇㅇ</p>
+              <p>이 게임은 가로, 세로, 대각 어디든 4개 1줄을 먼저 만들면 이김 ㅇㅇ</p>
             </div>
             <div className="section">
               <img src ={Exp2} alt="explain"></img>
