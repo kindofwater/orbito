@@ -23,9 +23,9 @@ def save_error_log():
 
 atexit.register(save_error_log)
 
-@app.route("/")
-def home():
-    return
+@app.route('/', methods=['GET', 'HEAD'])  # HEAD 메서드 허용
+def index():
+    return '', 200  # 빈 문자열과 상태코드 200을 명시적으로 리턴
 
 @app.route("/game", methods=["POST"])
 def game():
