@@ -6,8 +6,8 @@ import Exp2 from "./2.gif"
 import Exp3 from "./3.gif"
 import Toast from "./Toast"
 
-const API_URL = "https://orbito-2jlp.onrender.com";
-// const API_URL = "http://localhost:5000"
+// const API_URL = "https://orbito-2jlp.onrender.com";
+const API_URL = "http://localhost:5000"
 let button_array = [1,2,3,7, 0, 6, 10, 11, 4, 5, 9, 15, 8, 12, 13, 14]
 
 function App() {
@@ -301,9 +301,6 @@ function GameScreen({ StateButtonClick, showModal,
         clickMode={clickMode}
         turn={turn}
         />}
-      </div>
-      <div className="bug-report" onClick={() => setToast("현수한테 카톡을 하셈!!")}>
-        Bug report
       </div>
 
       <Userguide 

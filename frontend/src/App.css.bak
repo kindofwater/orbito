@@ -1,34 +1,5 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-:root {
-  --board-size: 520px; /* 480px content + 40px padding */
-  --board-padding: 20px;
-  --board-gap: 15px;
-  --circle-size: 100px;
-  --ball-size: 70px;
-}
-
-@media (max-width: 768px) {
-  :root {
-    --board-size: 430px; /* 400px content + 30px padding */
-    --board-padding: 15px;
-    --board-gap: 12px;
-    --circle-size: 82px;
-    --ball-size: 58px;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --board-size: 344px; /* 320px content + 24px padding */
-    --board-padding: 12px;
-    --board-gap: 10px;
-    --circle-size: 65px;
-    --ball-size: 45px;
-  }
-}
-
-
 div {
   font-size : 24px;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
@@ -98,23 +69,22 @@ body {
 .grid-box {
   position: relative;
   margin-top: 30px;
-  width: var(--board-size);
-  padding: var(--board-padding);
+  width: 480px;
+  padding: 20px;
   border-radius: 20px;
   background: #f4f1de;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--board-gap);
+  gap: 15px;
   justify-items: center;
   align-items: center;
-  box-sizing: border-box;
 }
 
 /* 배경 원 */
 .circle {
-  width: var(--circle-size);
-  height: var(--circle-size);
+  width: 100px;
+  height: 100px;
   background: black;
   border-radius: 50%;
   opacity: 0.1;
@@ -129,8 +99,8 @@ body {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--board-gap);
-  padding: var(--board-padding);
+  gap: 15px;
+  padding: 20px;
   box-sizing: border-box;
 
   justify-items: center; /* 중앙 정렬 추가 */
@@ -143,14 +113,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--circle-size);
-  height: var(--circle-size);
+  width: 100px;
+  height: 100px;
 }
 /* 기존 circle(100px)보다 작은 70px 흰색 원 */
 
 .small-ball-0 {
-  width: var(--ball-size);
-  height: var(--ball-size);
+  width: 70px;
+  height: 70px;
   background-color: #f4f1de;
   border-radius: 50%;
   opacity: 0; /* 좀 더 선명하게 */
@@ -161,8 +131,8 @@ body {
 }
 
 .small-ball-1 {
-  width: var(--ball-size);
-  height: var(--ball-size);
+  width: 70px;
+  height: 70px;
   background-color: #f4f1de;
   border-radius: 50%;
   opacity: 1; /* 좀 더 선명하게 */
@@ -173,8 +143,8 @@ body {
 }
 
 .small-ball-2 {
-  width: var(--ball-size);
-  height: var(--ball-size);
+  width: 70px;
+  height: 70px;
   background-color: #3D405B;
   border-radius: 50%;
   opacity: 1; /* 좀 더 선명하게 */
@@ -214,7 +184,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap : 10px;
+  gap : 1se0px;
   text-align: center;
 }
 
@@ -247,8 +217,8 @@ body {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--board-gap);
-  padding: var(--board-padding);
+  gap: 15px;
+  padding: 20px;
   box-sizing: border-box;
 
   justify-items: center; /* 중앙 정렬 추가 */
@@ -257,11 +227,11 @@ body {
 }
 
 .click {
-  width: var(--circle-size);
-  height: var(--circle-size);
+  width: 100px;
+  height: 100px;
   background-color: #00000000;
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1,5);
   box-sizing: border-box;
   opacity : 0;
   transition: all 0.2s ease;
@@ -285,64 +255,3 @@ body {
     opacity: 1;
   }
 }
-
-/* 설명 가이드 모달 반응형 스타일 */
-@media (max-width: 1024px) {
-  .modal {
-    width: 90%;
-    max-width: 450px;
-    flex-direction: column;
-    gap: 20px;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-  }
-  .press-start {
-    font-size: 20px;
-  }
-  .section {
-    font-size: 16px;
-    gap: 10px;
-  }
-}
-
-/* 상단 정보창 및 시작 버튼 모바일 최적화 배치 */
-@media (max-width: 480px) {
-  .flexbox {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: var(--board-size);
-    box-sizing: border-box;
-  }
-  
-  .header-box {
-    width: 100%;
-    margin-top: 10px;
-    box-sizing: border-box;
-  }
-  
-  .game_button {
-    width: 100%;
-    margin-top: 0;
-    box-sizing: border-box;
-  }
-}
-
-.bug-report {
-  width: var(--board-size);
-  text-align: right;
-  margin-top: 10px;
-  color: #7f8c8d;
-  font-size: 14px;
-  cursor: pointer;
-  box-sizing: border-box;
-  padding-right: 5px;
-}
-
-.bug-report:hover {
-  color: #5d6d7e;
-  text-decoration: underline;
-}
-
-
